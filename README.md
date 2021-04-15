@@ -1,5 +1,5 @@
 # springboot-demo
-To learn how to use docker, jenkins, etc.
+To learn how to use docker, jenkins, rocketmq, etc.
 
 ## steps:
 * import dependencies
