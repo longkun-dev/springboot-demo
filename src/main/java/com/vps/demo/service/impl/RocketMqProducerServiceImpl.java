@@ -1,8 +1,7 @@
 package com.vps.demo.service.impl;
 
-import com.vps.demo.service.RocketMqService;
+import com.vps.demo.service.RocketMqProducerService;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,9 +16,9 @@ import org.springframework.stereotype.Service;
  * rocketmq生产者配置
  */
 @Service
-public class RocketMqServiceImpl implements RocketMqService {
+public class RocketMqProducerServiceImpl implements RocketMqProducerService {
 
-    private static final Logger logger = LoggerFactory.getLogger(RocketMqServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(RocketMqProducerServiceImpl.class);
 
     @Value("${rocketmq.producer.groupName}")
     private String groupName;
@@ -40,12 +39,12 @@ public class RocketMqServiceImpl implements RocketMqService {
     @Override
     public DefaultMQProducer producer() {
         if (StringUtils.isEmpty(groupName)) {
-            logger.error("groupNema is empty");
+            logger.error("groupName is empty");
             throw new RuntimeException("groupName is empty");
         }
         if (StringUtils.isEmpty(namesrvAddr)) {
             logger.error("namesrvAddr is empty");
-            throw new RuntimeException("naemsrvAddr is empty");
+            throw new RuntimeException("namesrvAddr is empty");
         }
         DefaultMQProducer producer = new DefaultMQProducer(groupName);
         producer.setNamesrvAddr(namesrvAddr);
@@ -55,17 +54,11 @@ public class RocketMqServiceImpl implements RocketMqService {
         producer.setVipChannelEnabled(false);
         try {
             producer.start();
-            logger.info("rocketMq Producer start success; nameServer:{},producerGroupName:{}",
+            logger.info("rocketMq Producer start success; nameServer:{}, producerGroupName:{}",
                     namesrvAddr, groupName);
         } catch (Exception e) {
             logger.info("rocketMq Producer start fail; {}", e.getMessage(), e);
         }
         return producer;
-    }
-
-    @Bean
-    @Override
-    public DefaultMQPushConsumer consumer() {
-        return null;
     }
 }
