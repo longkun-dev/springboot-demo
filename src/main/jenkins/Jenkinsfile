@@ -4,9 +4,8 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building..'
-                sh 'echo $PATH'
                 sh 'mvn clean && mvn package'
-                sh 'cp target/springboot-demo.jar src/docker/springboot-demo.jar'
+                sh 'cp target/springboot-demo.jar src/main/docker/springboot-demo.jar'
                 echo 'Build completed.'
             }
         }
