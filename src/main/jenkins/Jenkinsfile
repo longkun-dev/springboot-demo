@@ -4,6 +4,8 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building..'
+                sh 'sudo ln -s /usr/local/maven3/bin/mvn /usr/bin/mvn'
+                sh 'sudo ln -s /usr/local/maven3/bin/mvn /usr/local/bin/mvn'
                 sh 'mvn clean && mvn package'
                 sh 'cp target/springboot-demo.jar src/docker/springboot-demo.jar'
                 echo 'Build completed.'
