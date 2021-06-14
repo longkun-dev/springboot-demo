@@ -1,0 +1,28 @@
+Jenkinsfile (Declarative Pipeline)
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building..'
+                sh 'mvn clean && mvn package'
+                sh 'cp target/springboot-demo.jar src/docker/springboot-demo.jar'
+                echo 'Build completed.'
+            }
+        }
+        stage("Image") {
+            steps {
+                echo 'Imaging..'
+                sh 'cd src/main/docker && docker build --rm -t springboot-demo:v1 .'
+                echo 'Image completed.'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying....'
+                sh 'docker run -d -p 8082:8001 --name springboot-demo springboot-demo:v1'
+                echo 'Deploy completed.'
+            }
+        }
+    }
+}
