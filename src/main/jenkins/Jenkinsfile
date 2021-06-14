@@ -12,6 +12,8 @@ pipeline {
         stage("Image") {
             steps {
                 echo 'Imaging..'
+                sh 'sudo gpasswd -a jenkins docker'
+                sh 'newgrp docker'
                 sh 'cd src/main/docker && docker build --rm -t springboot-demo:v1 .'
                 echo 'Image completed.'
             }
